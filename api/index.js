@@ -27,11 +27,6 @@ const handler = async (req, res) => {
       to,
       subject,
       text,
-      'o:testmode': 'yes',
-      'o:tag': ['test'],
-      'h:X-Mailgun-Variables': JSON.stringify({
-        test: true
-      })
     });
     res.json({ success: true, message: '邮件发送成功！', result });
   } catch (error) {
