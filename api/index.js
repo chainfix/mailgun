@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const formData = require('form-data');
 const Mailgun = require('mailgun.js');
-require('dotenv').config();
 
 const app = express();
 app.use(cors());
@@ -10,7 +9,11 @@ app.use(express.json());
 
 const mailgun = new Mailgun(formData);
 
-app.post('/api/send-email', async (req, res) => {
+const handler = async (req, res) => {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   const { apiKey, domain, from, to, subject, text } = req.body;
   
   const mg = mailgun.client({
@@ -40,7 +43,6 @@ app.post('/api/send-email', async (req, res) => {
       details: error.details || {}
     });
   }
-});
+};
 
-// Vercel 需要导出 app
-module.exports = app; 
+module.exports = handler; 
