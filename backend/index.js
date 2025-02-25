@@ -10,7 +10,7 @@ app.use(express.json());
 
 const mailgun = new Mailgun(formData);
 
-app.post('/send-email', async (req, res) => {
+app.post('/api/send-email', async (req, res) => {
   const { apiKey, domain, from, to, subject, text } = req.body;
   
   const mg = mailgun.client({
@@ -42,7 +42,5 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`服务器运行在端口 ${PORT}`);
-}); 
+// Vercel 需要导出 app
+module.exports = app; 
